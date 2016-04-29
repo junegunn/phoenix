@@ -73,7 +73,7 @@ public class StatisticsCollectorFactory {
      */
     private static boolean statisticsEnabled(RegionCoprocessorEnvironment env) {
         return env.getConfiguration().getBoolean(QueryServices.STATS_ENABLED_ATTRIB, true) &&
-                !DISABLE_STATS.contains(env.getRegionInfo().getTable());
+                !DISABLE_STATS.contains(env.getRegion().getRegionInfo().getTable());
     }
 
 }

@@ -144,6 +144,13 @@ public class ReadWriteKeyValuesWithCodecIT {
     }
   }
   
+  private ArrayList<Cell> getCells(WALEdit edit) {
+    ArrayList<KeyValue> kvs = edit.getKeyValues();
+    ArrayList<Cell> cells = new ArrayList<Cell>(kvs.size());
+    cells.addAll(kvs);
+    return cells;
+  }
+
   /**
    * Write the edits to the specified path on the {@link FileSystem} using the given codec and then
    * read them back in and ensure that we read the same thing we wrote.
@@ -155,7 +162,7 @@ public class ReadWriteKeyValuesWithCodecIT {
     // write the edits out
     FSDataOutputStream out = fs.create(testFile);
     for (WALEdit edit : edits) {
-      writeWALEdit(codec, edit.getCells(), out);
+      writeWALEdit(codec, getCells(edit), out);
     }
     out.close();
 
@@ -174,9 +181,9 @@ public class ReadWriteKeyValuesWithCodecIT {
     for(int i=0; i< edits.size(); i++){
       WALEdit expected = edits.get(i);
       WALEdit found = read.get(i);
-      for(int j=0; j< expected.getCells().size(); j++){
-        Cell fkv = found.getCells().get(j);
-        Cell ekv = expected.getCells().get(j);
+      for(int j=0; j< getCells(expected).size(); j++){
+        Cell fkv = getCells(found).get(j);
+        Cell ekv = getCells(expected).get(j);
         assertEquals("KV mismatch for edit! Expected: "+expected+", but found: "+found, ekv, fkv);
       }
     }

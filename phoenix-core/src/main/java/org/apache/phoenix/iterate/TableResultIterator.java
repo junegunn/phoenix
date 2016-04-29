@@ -145,6 +145,7 @@ public class TableResultIterator implements ResultIterator {
         if (delay < renewLeaseThreshold) {
             return THRESHOLD_NOT_REACHED;
         }
+        /*
         if (scanIterator instanceof ScanningResultIterator
                 && ((ScanningResultIterator)scanIterator).getScanner() instanceof AbstractClientScanner) {
             // Need this explicit cast because HBase's ResultScanner doesn't have this method exposed.
@@ -154,6 +155,7 @@ public class TableResultIterator implements ResultIterator {
                 return RENEWED;
             }
         }
+        */
         return NOT_RENEWED;
     }
 
